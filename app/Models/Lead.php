@@ -3,14 +3,21 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use LeadGenerator\Generator;
+use App\Generators\LeadGeneratorInterface;
 
 class Lead implements LeadInterface
 {
-    public function run(int $countLead): void
+    public function __construct(
+        private readonly LeadGeneratorInterface $generator
+    )
+    {}
+
+    public function run(int $countLead, int $step): void
     {
-        $leadGenerator = new Generator();
         $processor = new LeadProcessor();
-        $leadGenerator->generateLeads($countLead, [$processor, 'process']);
+        if (method_exists($this->generator, 'setStep')) {
+            $this->generator->setStep($step);
+        }
+        $this->generator->generateLeads($countLead, [$processor, 'process']);
     }
 }

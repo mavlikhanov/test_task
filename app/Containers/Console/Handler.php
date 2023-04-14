@@ -29,7 +29,7 @@ class Handler
     public function run(array $arguments): void
     {
         $leadGeneratorConsole = new LeadGeneratorConsole(
-            new Lead(),
+            new Lead(new LeadGenerator()),
             new ProcessValidator()
         );
         $leadGeneratorConsole->handle((int)$arguments[0]);

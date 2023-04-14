@@ -10,6 +10,8 @@ use App\Validators\ProcessValidatorInterface;
 
 class LeadGeneratorConsole extends AbstractConsole
 {
+    private int $lastId;
+
     public function __construct(
         private readonly LeadInterface             $lead,
         private readonly ProcessValidatorInterface $processValidator
@@ -24,6 +26,8 @@ class LeadGeneratorConsole extends AbstractConsole
         $leadsPerProcess = ceil($countLead / $countTreads);
         $childProcesses = [];
 
+        $startPosition = intval(ceil($countLead / $countTreads));
+
         for ($treadItem = 0; $treadItem < $countTreads; $treadItem++) {
             $processId = pcntl_fork();
 
@@ -37,10 +41,11 @@ class LeadGeneratorConsole extends AbstractConsole
 
             $start = $treadItem * $leadsPerProcess + 1;
             $end = min(($treadItem + 1) * $leadsPerProcess, $countLead);
-
             $countElements = intval($end - $start + 1);
 
-            $this->lead->run($countElements);
+            $step = $treadItem * $startPosition;
+
+            $this->lead->run($countElements, $step);
             exit(0);
         }
 

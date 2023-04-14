@@ -5,5 +5,5 @@ namespace App\Models;
 
 interface LeadInterface
 {
-    public function run(int $countLead): void;
+    public function run(int $countLead, int $step): void;
 }
