@@ -1,7 +1,5 @@
 FROM php:8.1-zts
 
-ENV VERSION 8.1.1
-
 RUN apt-get update && apt-get install -y \
         git \
         zip \
@@ -10,17 +8,10 @@ RUN apt-get update && apt-get install -y \
 
 
 RUN apt-get update \
-    && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo_mysql
+    && apt-get install -y libpq-dev
 
 RUN docker-php-ext-configure pcntl --enable-pcntl \
   && docker-php-ext-install \
     pcntl
 
-RUN docker-php-ext-install pdo_mysql
-
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-
-WORKDIR /app
-
-RUN chmod 777 /app/generate_leads
