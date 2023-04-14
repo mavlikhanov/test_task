@@ -1,0 +1,38 @@
+#!/usr/bin/env php
+<?php
+
+use App\Containers\Console\Handler;
+use App\Containers\ConsoleOutputHandler;
+use App\Validators\GenerateLeadInputValidator;
+
+require __DIR__.'/vendor/autoload.php';
+
+$consoleOutputHandler = new ConsoleOutputHandler();
+
+$generateLeadInputValidator = new GenerateLeadInputValidator();
+
+$arguments = $argv;
+
+array_shift($arguments);
+
+if (!$generateLeadInputValidator->setArguments($arguments)->isLeadCountPassed()) {
+    $consoleOutputHandler->showErrorMessage("Не передан обязательный параметр lead.\nphp generate_leads --<leads count>");
+    exit(0);
+}
+
+$arguments[0] = str_replace('--', '', $arguments[0]);
+
+$generateLeadInputValidator->setArguments($arguments);
+
+if (!$generateLeadInputValidator->isLeadCountPassed()) {
+    $consoleOutputHandler->showErrorMessage("Парамтер <количество лидов> должен быть числом");
+    exit(0);
+}
+
+$cliHandler = new Handler();
+
+try {
+    $cliHandler->run($arguments);
+} catch (Exception $exception) {
+    $consoleOutputHandler->showErrorMessage($exception->getMessage());
+}

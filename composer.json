@@ -1,0 +1,19 @@
+{
+    "name": "eldar/test",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Eldar",
+            "email": "eld.mav@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7",
+        "vladimir163/lead-generator": "*"
+    }
+}
