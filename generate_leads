@@ -24,7 +24,7 @@ $arguments[0] = str_replace('--', '', $arguments[0]);
 
 $generateLeadInputValidator->setArguments($arguments);
 
-if (!$generateLeadInputValidator->isLeadCountPassed()) {
+if (!$generateLeadInputValidator->isLeadCountValid()) {
     $consoleOutputHandler->showErrorMessage("Парамтер <количество лидов> должен быть числом");
     exit(0);
 }
